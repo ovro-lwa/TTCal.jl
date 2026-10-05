@@ -27,7 +27,7 @@
     #@testset "applycal" begin
     #    for T in (GainCalibration,PolarizationCalibration)
     #        @show "applycal", T
-    #        g = rand(Complex128)
+    #        g = rand(ComplexF64)
     #        δ32 = sqrt(eps(Float32))*vecnorm(visibilities.data)
     #        δ64 = sqrt(eps(Float64))*vecnorm(visibilities.data)
     #        random_cal   = T(Nant,Nfreq)
@@ -269,7 +269,7 @@
 #            test = npzread(filename)
 #            test_gains = test["gains"]
 #            test_flags = test["flags"]
-#            expected_gains = zeros(Complex128, 2, Nant, Nfreq)
+#            expected_gains = zeros(ComplexF64, 2, Nant, Nfreq)
 #            expected_flags = zeros(Bool, Nant, Nfreq)
 #            for β = 1:Nfreq, ant = 1:Nant
 #                expected_gains[1, ant, β] = calibration.jones[ant,β].xx
@@ -291,7 +291,7 @@
 #            test = npzread(filename)
 #            test_gains = test["gains"]
 #            test_flags = test["flags"]
-#            expected_gains = zeros(Complex128, 4, Nant, Nfreq)
+#            expected_gains = zeros(ComplexF64, 4, Nant, Nfreq)
 #            expected_flags = zeros(Bool, Nant, Nfreq)
 #            for β = 1:Nfreq, ant = 1:Nant
 #                expected_gains[1, ant, β] = calibration.jones[ant,β].xx

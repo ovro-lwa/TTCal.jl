@@ -24,7 +24,7 @@ function Dataset(metadata; polarization=Full)
     Dataset(metadata, data)
 end
 
-function Base.rand!(dataset::Dataset)
+function Random.rand!(dataset::Dataset)
     for time = 1:Ntime(dataset), frequency = 1:Nfreq(dataset)
         visibilities = dataset[frequency, time]
         for antenna1 = 1:Nant(dataset), antenna2 = antenna1:Nant(dataset)

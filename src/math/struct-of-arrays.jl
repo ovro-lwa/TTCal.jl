@@ -19,7 +19,7 @@ struct ComplexVector{T} <: AbstractVector{Complex{T}}
     imag :: Vector{T}
 end
 
-ComplexVector(N) = ComplexVector(Complex128, N)
+ComplexVector(N) = ComplexVector(ComplexF64, N)
 ComplexVector(T, N) = ComplexVector(zeros(real(T), N), zeros(real(T), N))
 ComplexVector{T}(N) where {T} = ComplexVector(T, N)
 Base.size(v::ComplexVector) = size(v.real)

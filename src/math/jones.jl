@@ -13,9 +13,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-abstract type AbstractJonesMatrix <: AbstractMatrix{Complex128} end
+abstract type AbstractJonesMatrix <: AbstractMatrix{ComplexF64} end
 
-doc"""
+@doc doc"""
     JonesMatrix
 
 This type represents a 2x2 complex Jones matrix.
@@ -28,13 +28,13 @@ This type represents a 2x2 complex Jones matrix.
 ```
 """
 struct JonesMatrix <: AbstractJonesMatrix
-    xx::Complex128
-    xy::Complex128
-    yx::Complex128
-    yy::Complex128
+    xx::ComplexF64
+    xy::ComplexF64
+    yx::ComplexF64
+    yy::ComplexF64
 end
 
-doc"""
+@doc doc"""
     DiagonalJonesMatrix
 
 This type represents a Jones matrix that is diagonal.
@@ -50,11 +50,11 @@ These matrices are used to represent the complex gains of each antenna
 without accounting for the off-diagonal polarization leakage terms.
 """
 struct DiagonalJonesMatrix <: AbstractJonesMatrix
-    xx::Complex128
-    yy::Complex128
+    xx::ComplexF64
+    yy::ComplexF64
 end
 
-doc"""
+@doc doc"""
     HermitianJonesMatrix
 
 This type represents a Jones matrix that is Hermitian.
@@ -72,7 +72,7 @@ conjugates.
 """
 struct HermitianJonesMatrix <: AbstractJonesMatrix
     xx::Float64
-    xy::Complex128
+    xy::ComplexF64
     yy::Float64
 end
 
@@ -106,7 +106,7 @@ function Base.getindex(J::DiagonalJonesMatrix, idx::Int)
     elseif idx == 4
         J.yy
     else
-        zero(Complex128)
+        zero(ComplexF64)
     end
 end
 
@@ -127,8 +127,8 @@ Base.IndexStyle(::Type{<:AbstractJonesMatrix}) = IndexLinear()
 
 Base.zero(::Type{JonesMatrix}) = JonesMatrix(0, 0, 0, 0)
 Base.one( ::Type{JonesMatrix}) = JonesMatrix(1, 0, 0, 1) # the identity matrix
-Base.rand(::Type{JonesMatrix}) = JonesMatrix(rand(Complex128), rand(Complex128),
-                                             rand(Complex128), rand(Complex128))
+Base.rand(::Type{JonesMatrix}) = JonesMatrix(rand(ComplexF64), rand(ComplexF64),
+                                             rand(ComplexF64), rand(ComplexF64))
 
 Base.zero(::Type{DiagonalJonesMatrix}) = DiagonalJonesMatrix(0, 0)
 Base.one( ::Type{DiagonalJonesMatrix}) = DiagonalJonesMatrix(1, 1) # the identity matrix
@@ -136,7 +136,7 @@ Base.rand(::Type{DiagonalJonesMatrix}) = DiagonalJonesMatrix(rand(Float64), rand
 
 Base.zero(::Type{HermitianJonesMatrix}) = HermitianJonesMatrix(0, 0, 0)
 Base.one( ::Type{HermitianJonesMatrix}) = HermitianJonesMatrix(1, 0, 1) # the identity matrix
-Base.rand(::Type{HermitianJonesMatrix}) = HermitianJonesMatrix(rand(Float64), rand(Complex128),
+Base.rand(::Type{HermitianJonesMatrix}) = HermitianJonesMatrix(rand(Float64), rand(ComplexF64),
                                                                rand(Float64))
 
 #function JonesMatrix(mat::Matrix)
@@ -220,38 +220,42 @@ Base.conj(J::JonesMatrix) = JonesMatrix(conj(J.xx), conj(J.xy), conj(J.yx), conj
 Base.conj(J::DiagonalJonesMatrix) = DiagonalJonesMatrix(conj(J.xx), conj(J.yy))
 Base.conj(J::HermitianJonesMatrix) = HermitianJonesMatrix(J.xx, conj(J.xy), J.yy)
 
-Base.transpose(J::JonesMatrix) = JonesMatrix(J.xx, J.yx, J.xy, J.yy)
-Base.transpose(J::DiagonalJonesMatrix) = J
-Base.transpose(J::HermitianJonesMatrix) = conj(J)
+LinearAlgebra.transpose(J::JonesMatrix) = JonesMatrix(J.xx, J.yx, J.xy, J.yy)
+LinearAlgebra.transpose(J::DiagonalJonesMatrix) = J
+LinearAlgebra.transpose(J::HermitianJonesMatrix) = conj(J)
 
-Base.ctranspose(J::JonesMatrix) = JonesMatrix(conj(J.xx), conj(J.yx), conj(J.xy), conj(J.yy))
-Base.ctranspose(J::DiagonalJonesMatrix) = conj(J)
-Base.ctranspose(J::HermitianJonesMatrix) = J
+ctranspose(J::JonesMatrix) = JonesMatrix(conj(J.xx), conj(J.yx), conj(J.xy), conj(J.yy))
+ctranspose(J::DiagonalJonesMatrix) = conj(J)
+ctranspose(J::HermitianJonesMatrix) = J
 
-Base.det(J::JonesMatrix) = J.xx*J.yy - J.xy*J.yx
-Base.det(J::DiagonalJonesMatrix) = J.xx*J.yy
-Base.det(J::HermitianJonesMatrix) = J.xx*J.yy - J.xy*conj(J.xy)
+LinearAlgebra.adjoint(J::JonesMatrix) = JonesMatrix(conj(J.xx), conj(J.yx), conj(J.xy), conj(J.yy))
+LinearAlgebra.adjoint(J::DiagonalJonesMatrix) = conj(J)
+LinearAlgebra.adjoint(J::HermitianJonesMatrix) = J
 
-function Base.inv(J::JonesMatrix)
+LinearAlgebra.det(J::JonesMatrix) = J.xx*J.yy - J.xy*J.yx
+LinearAlgebra.det(J::DiagonalJonesMatrix) = J.xx*J.yy
+LinearAlgebra.det(J::HermitianJonesMatrix) = J.xx*J.yy - J.xy*conj(J.xy)
+
+function LinearAlgebra.inv(J::JonesMatrix)
     1/det(J) * JonesMatrix(J.yy, -J.xy, -J.yx, J.xx)
 end
 
-function Base.inv(J::DiagonalJonesMatrix)
+function LinearAlgebra.inv(J::DiagonalJonesMatrix)
     DiagonalJonesMatrix(1/J.xx, 1/J.yy)
 end
 
-function Base.inv(J::HermitianJonesMatrix)
+function LinearAlgebra.inv(J::HermitianJonesMatrix)
     1/det(J) * HermitianJonesMatrix(J.yy, -J.xy, J.xx)
 end
 
-function Base.kron(J1::JonesMatrix, J2::JonesMatrix)
+function LinearAlgebra.kron(J1::JonesMatrix, J2::JonesMatrix)
     @SMatrix [J1.xx*J2.xx J1.xx*J2.xy J1.xy*J2.xx J1.xy*J2.xy;
               J1.xx*J2.yx J1.xx*J2.yy J1.xy*J2.yx J1.xy*J2.yy;
               J1.yx*J2.xx J1.yx*J2.xy J1.yy*J2.xx J1.yy*J2.xy;
               J1.yx*J2.yx J1.yx*J2.yy J1.yy*J2.yx J1.yy*J2.yy]
 end
 
-doc"""
+@doc doc"""
     congruence_transform(J::JonesMatrix, K::HermitianJonesMatrix)
 
 Compute the congruence transformation of $K$ with respect to $J$. Using this function instead of

@@ -1,9 +1,9 @@
 function xyz2uvw(x,y,z)
     Nant = length(x)
     Nbase = div(Nant*(Nant-1),2) + Nant
-    u = Array{Float64}(Nbase)
-    v = Array{Float64}(Nbase)
-    w = Array{Float64}(Nbase)
+    u = Array{Float64}(undef, Nbase)
+    v = Array{Float64}(undef, Nbase)
+    w = Array{Float64}(undef, Nbase)
     α = 1
     for i = 1:Nant, j = i:Nant
         u[α] = x[j]-x[i]
@@ -16,8 +16,8 @@ end
 
 function ant1ant2(Nant)
     Nbase = div(Nant*(Nant-1),2) + Nant
-    ant1 = Array{Int32}(Nbase)
-    ant2 = Array{Int32}(Nbase)
+    ant1 = Array{Int32}(undef, Nbase)
+    ant2 = Array{Int32}(undef, Nbase)
     α = 1
     for i = 1:Nant, j = i:Nant
         ant1[α] = i - 1
@@ -33,15 +33,15 @@ function createms(Nant, Nfreq)
     frame = ReferenceFrame()
     OVRO  = Position(pos"WGS84", 1207.969*u"m", -118.284441*u"°", 37.232271*u"°")
     pos   = measure(frame, OVRO, pos"ITRF")
-    t = (2015.-1858.)*365.*24.*60.*60. * u"s" # a rough current Julian date
+    t = (2015. - 1858.) * 365. * 24. * 60. * 60. * u"s" # a rough current Julian date
     set!(frame, Epoch(epoch"UTC", t))
     set!(frame, pos)
 
-    x = pos.x + 100randn(Nant)
-    y = pos.y + 100randn(Nant)
-    z = pos.z + 100randn(Nant)
+    x = pos.x .+ 100randn(Nant)
+    y = pos.y .+ 100randn(Nant)
+    z = pos.z .+ 100randn(Nant)
     u, v, w = xyz2uvw(x, y, z)
-    ν = linspace(40e6, 60e6, Nfreq) |> collect
+    ν = range(40e6, stop=60e6, length=Nfreq) |> collect
     ant1, ant2 = ant1ant2(Nant)
 
     zenith = Direction(dir"AZEL", 0*u"°", 90*u"°")

@@ -15,7 +15,7 @@
 
 abstract type AbstractSpectrum end
 
-doc"""
+@doc doc"""
     struct PowerLaw <: AbstractSpectrum
 
 A multi-component power-law spectrum.

@@ -122,10 +122,10 @@ end
 
 macro cli_convergence_criteria()
     quote
-        maxiter = args["--maxiter"] === nothing? 20 : parse(Int, args["--maxiter"])
-        tolerance = args["--tolerance"] === nothing? 1e-3 : parse(Float64, args["--tolerance"])
-        peeliter = args["--peeliter"] === nothing? 3 : parse(Int, args["--peeliter"])
-        minuvw = args["--minuvw"] === nothing? 0.0 : parse(Float64, args["--minuvw"])
+        maxiter = args["--maxiter"] === nothing ? 20 : parse(Int, args["--maxiter"])
+        tolerance = args["--tolerance"] === nothing ? 1e-3 : parse(Float64, args["--tolerance"])
+        peeliter = args["--peeliter"] === nothing ? 3 : parse(Int, args["--peeliter"])
+        minuvw = args["--minuvw"] === nothing ? 0.0 : parse(Float64, args["--minuvw"])
     end |> esc
 end
 
@@ -145,9 +145,9 @@ function run_applycal(args)
     
     write_to_corrected = args["--force-imaging"] || Tables.column_exists(ms, "CORRECTED_DATA")
     apply_to_corrected = args["--corrected"] && Tables.column_exists(ms, "CORRECTED_DATA")
-    data = apply_to_corrected? ms["CORRECTED_DATA"] : ms["DATA"]
+    data = apply_to_corrected ? ms["CORRECTED_DATA"] : ms["DATA"]
     
-    T = size(data)[1] == 2? Dual : Full 
+    T = size(data)[1] == 2 ? Dual : Full 
     dataset = array_to_ttcal(data, meta, 1, T)
     applycal!(dataset, cal) 
     data = convert.(Complex64, ttcal_to_array(dataset))
@@ -238,26 +238,6 @@ for routine in (:peel, :shave, :zest, :prune)
         Tables.close(ms)
     end
 end
-
-#for (routine, T) in ((:peel, PeelingSource), (:shave, ShavingSource),
-#                     (:zest, ZestingSource), (:prune, PruningSource))
-#    func = Symbol("run_", routine)
-#    @eval function $func(args)
-#        @cli_intro $routine
-#        @cli_load_ms
-#        @cli_load_sources
-#        @cli_load_beam
-#        @cli_convergence_criteria
-#        data = Tables.column_exists(ms, "CORRECTED_DATA")? read(ms, "CORRECTED_DATA") : read(ms, "DATA")
-#        flag_short_baselines!(data, meta, minuvw)
-#        peelingsources = $T[$T(source) for source in sources]
-#        calibrations = peel!(data, meta, beam, peelingsources,
-#                             peeliter=peeliter, maxiter=maxiter, tolerance=tolerance)
-#        (Tables.column_exists(ms, "CORRECTED_DATA")? write(ms, "CORRECTED_DATA", data, apply_flags=false)
-#                                                   : write(ms, "DATA", data, apply_flags=false))
-#        @cli_cleanup
-#    end
-#end
 
 function select_beam(str)
     dictionary = Dict("constant" => ConstantBeam,

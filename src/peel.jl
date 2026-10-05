@@ -53,7 +53,7 @@ function peel!(calibrations, coherencies, dataset, peeliter, maxiter, tolerance,
     #if !quiet
     #    for (idx, calibration) in enumerate(calibrations)
     #        if sum(calibration.flags) > 0.5length(calibration.flags)
-    #            warn("Calibration number $idx frequently failed to converge.")
+    #            @warn ("Calibration number $idx frequently failed to converge.")
     #        end
     #    end
     #end
@@ -219,7 +219,7 @@ end
 #    if !quiet
 #        for (idx, calibration) in enumerate(calibrations)
 #            if sum(calibration.flags) > 0.5length(calibration.flags)
-#                warn("Calibration number $idx frequently failed to converge.")
+#                @warn ("Calibration number $idx frequently failed to converge.")
 #            end
 #        end
 #    end

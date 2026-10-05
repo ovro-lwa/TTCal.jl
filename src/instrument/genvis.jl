@@ -255,7 +255,7 @@ function geometric_delays(antenna_positions::Vector{Position}, source_position::
     delays
 end
 
-doc"""
+@doc doc"""
     delays_to_fringes(delays, frequency)
 
 Compute $\exp(2πiντ)$ for each delay $τ$ and the frequency $ν$.
@@ -263,7 +263,7 @@ Compute $\exp(2πiντ)$ for each delay $τ$ and the frequency $ν$.
 function delays_to_fringes(delays, frequency)
     twoπ = float(2π)
     Nant = length(delays)
-    fringes = zeros(Complex128, Nant)
+    fringes = zeros(ComplexF64, Nant)
     for i = 1:Nant
         fringes[i] = cis(twoπ * frequency * delays[i])
     end
@@ -341,7 +341,7 @@ function baseline_coherency(source::Shapelet, frequency, position1, position2, v
     π2 = π*π
     exponential = exp(-2π2*β^2*(x^2+y^2))
     # compute the contribution from each shapelet component
-    out = zero(Complex128)
+    out = zero(ComplexF64)
     idx = 1
     nmax = round(Int, sqrt(length(source.coeff))) - 1
     for n2 = 0:nmax, n1 = 0:nmax

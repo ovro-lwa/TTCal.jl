@@ -3,7 +3,7 @@
         @test zero(T) |> Matrix == [0 0; 0 0]
         @test  one(T) |> Matrix == [1 0; 0 1]
 
-        a = rand(Complex128)
+        a = rand(ComplexF64)
         J1 = rand(T)
         J2 = rand(T)
         mat1 = Matrix(J1)

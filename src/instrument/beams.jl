@@ -51,7 +51,7 @@ the flux by a beam model, you should use `ConstantBeam` to avoid applying a beam
 struct ConstantBeam <: AbstractBeam end
 (::ConstantBeam)(ν, az, el)::JonesMatrix = one(JonesMatrix)
 
-doc"""
+@doc doc"""
     SineBeam <: AbstractBeam
 
 This beam is azimuthally symmetric and independent of frequency.  The gain of an antenna scales as
@@ -79,7 +79,7 @@ function (beam::SineBeam)(ν, az, el)::JonesMatrix
     JonesMatrix(s, 0, 0, s)
 end
 
-doc"""
+@doc doc"""
     Memo178Beam <: AbstractBeam
 
 This beam is based on the parametric fit to EM simulations presented in [LWA memo

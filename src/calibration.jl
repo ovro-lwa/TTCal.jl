@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-const CalElementTypes = Union{Complex128, DiagonalJonesMatrix, JonesMatrix}
+const CalElementTypes = Union{ComplexF64, DiagonalJonesMatrix, JonesMatrix}
 
 struct Solution{P <: Polarization, T} <: AbstractVector{eltype(T)}
     data :: T
@@ -111,7 +111,7 @@ function calibrate!(calibration::Calibration, data::Dataset, model::Dataset,
             if !quiet
                 if !converged
                     print("\r")
-                    warn("Calibration did not converge (integration: $time, channel: $frequency")
+                    @warn ("Calibration did not converge (integration: $time, channel: $frequency")
                 end
                 next!(prg)
             end
@@ -130,7 +130,7 @@ function calibrate_onefrequency!(calibration::Calibration, data::Dataset, model:
         if !quiet
             if !converged
                 print("\r")
-                warn("Calibration did not converge (integration: $time)")
+                @warn ("Calibration did not converge (integration: $time)")
             end
             next!(prg)
         end
@@ -148,7 +148,7 @@ function calibrate_onetime!(calibration::Calibration, data::Dataset, model::Data
         if !quiet
             if !converged
                 print("\r")
-                warn("Calibration did not converge (channel: $frequency)")
+                @warn ("Calibration did not converge (channel: $frequency)")
             end
             next!(prg)
         end
@@ -161,7 +161,7 @@ function calibrate_onefrequency_onetime!(calibration::Calibration, data::Dataset
     model_slice = [getindex.(model[:], antenna) for antenna = 1:Nant(data)]
     converged = solve!(calibration[1, 1].data, data_slice, model_slice, maxiter, tolerance)
     if !quiet
-        converged || warn("Calibration did not converge")
+        converged || @warn ("Calibration did not converge")
         next!(prg)
     end
 end
@@ -251,7 +251,7 @@ end
 ## * uncomment the corresponding tests in `test/calibration.jl`
 ##
 ##function write_for_python(filename, calibration::GainCalibration)
-##    gains = zeros(Complex128, 2, Nant(calibration), Nfreq(calibration))
+##    gains = zeros(ComplexF64, 2, Nant(calibration), Nfreq(calibration))
 ##    flags = zeros(      Bool,    Nant(calibration), Nfreq(calibration))
 ##    for β = 1:Nfreq(calibration), ant = 1:Nant(calibration)
 ##        gains[1,ant,β] = calibration.jones[ant,β].xx
@@ -262,7 +262,7 @@ end
 ##end
 ##
 ##function write_for_python(filename, calibration::PolarizationCalibration)
-##    gains = zeros(Complex128, 4, Nant(calibration), Nfreq(calibration))
+##    gains = zeros(ComplexF64, 4, Nant(calibration), Nfreq(calibration))
 ##    flags = zeros(      Bool,    Nant(calibration), Nfreq(calibration))
 ##    for β = 1:Nfreq(calibration), ant = 1:Nant(calibration)
 ##        gains[1,ant,β] = calibration.jones[ant,β].xx

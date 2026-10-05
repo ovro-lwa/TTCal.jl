@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-doc"""
+@doc doc"""
     StokesVector
 
 This type represents a Stokes vector.
@@ -27,7 +27,7 @@ This type represents a Stokes vector.
     \end{pmatrix}
 ```
 """
-immutable StokesVector <: AbstractVector{Float64}
+struct StokesVector <: AbstractVector{Float64}
     I::Float64
     Q::Float64
     U::Float64

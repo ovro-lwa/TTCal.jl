@@ -48,6 +48,10 @@ using Unitful, UnitfulAstro
 using CasaCore.Measures
 using CasaCore.Tables
 using StaticArrays
+using LinearAlgebra
+using Statistics
+using Markdown
+using Random
 
 struct TTCalException <: Exception
     message :: String

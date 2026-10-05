@@ -1,12 +1,16 @@
 using TTCal
-using Base.Test
+using Test
 using CasaCore.Measures
 using CasaCore.Tables
 using Unitful, UnitfulAstro
+using LinearAlgebra
+using Statistics
+using Random
+
 
 include("setup.jl")
 
-srand(123)
+Random.seed!(123)
 @testset "TTCal Tests" begin
     @testset "math" begin
         include("math/special.jl")

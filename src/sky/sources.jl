@@ -18,6 +18,8 @@ struct Source{Shapes<:AbstractVector{<:AbstractShape}}
     shapes :: Shapes
 end
 
+Broadcast.broadcastable(source::Source) = Ref(source)
+
 function Source(name::String, shape::AbstractShape)
     Source(name, [shape])
 end

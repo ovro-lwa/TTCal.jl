@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-doc"""
+@doc doc"""
     hermite(n, x)
 
 Compute the value of the $n$th Hermite polynomial at $x$.
@@ -44,7 +44,7 @@ function hermite(n, x)
     end
 end
 
-doc"""
+@doc doc"""
     zernike(n, m, ρ, θ)
 
 Compute the value of the Zernike polynomial $Z_{n,m}$ at the polar coordinates $(ρ,θ)$.
