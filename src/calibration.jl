@@ -52,12 +52,12 @@ function merge!(lhs::Calibration{P, T}, rhs::Calibration{P, T}; axis=:frequency)
     Nfreq,  Ntime  = size(lhs.data)
     Nfreq′, Ntime′ = size(rhs.data)
     if axis == :frequency
-        data = Array{Solution{P, T}}(Nfreq+Nfreq′, Ntime)
+        data = Array{Solution{P, T}}(undef, Nfreq+Nfreq′, Ntime)
         data[    1:Nfreq, :] = lhs.data
         data[Nfreq+1:end, :] = rhs.data
         lhs.data = data
     elseif axis == :time
-        data = Array{Solution{P, T}}(Nfreq, Ntime+Ntime′)
+        data = Array{Solution{P, T}}(undef, Nfreq, Ntime+Ntime′)
         data[:,     1:Ntime] = lhs.data
         data[:, Ntime+1:end] = rhs.data
         lhs.data = data

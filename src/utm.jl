@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-immutable Hemisphere{N} end
+struct Hemisphere{N} end
 const north = Hemisphere{true}()
 const south = Hemisphere{false}()
 
@@ -40,7 +40,7 @@ Wikipedia page.
 """
 function latlong_to_utm(zone, latitude, longitude)
     k0 = 0.9996
-    N0 = latitude ≥ 0? 0.0 : 10000.0
+    N0 = latitude ≥ 0 ? 0.0 : 10000.0
     E0 = 500
 
     n = WGS84.f/(2-WGS84.f)
@@ -87,10 +87,10 @@ This function is entirely based on the [Universal Transverse Mercator coordinate
 (https://en.wikipedia.org/w/index.php?title=Universal_Transverse_Mercator_coordinate_system&oldid=683193579#Simplified_formulas)
 Wikipedia page.
 """
-function utm_to_latlong{N}(zone, easting, northing,
-                           hemisphere::Hemisphere{N} = north)
+function utm_to_latlong(zone, easting, northing,
+                           hemisphere::Hemisphere{N} = north) where {N}
     k0 = 0.9996
-    N0 = N? 0.0 : 10000.0
+    N0 = N ? 0.0 : 10000.0
     E0 = 500
 
     n = WGS84.f/(2-WGS84.f)

@@ -58,7 +58,7 @@ function createms(Nant, Nfreq)
 
     subtable = Tables.create("$name/ANTENNA")
     Tables.add_rows!(subtable, Nant)
-    subtable["POSITION"] = [x y z]'
+    subtable["POSITION"] = Matrix([x y z]')
     table[kw"ANTENNA"] = subtable
     Tables.close(subtable)
 

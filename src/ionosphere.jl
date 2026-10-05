@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-type Ionosphere
+mutable struct Ionosphere
     TEC :: Float64
 end
 
@@ -74,7 +74,7 @@ function ray_trace(elevation, frequency, plasma_frequency)
     θ::Float64
 end
 
-doc"""
+@doc doc"""
     find_intersection_with_circle(m, b, R)
 
 Find the coordinates $(x,y)$ where the line $y = mx+b$

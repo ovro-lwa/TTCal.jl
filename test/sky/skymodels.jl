@@ -51,7 +51,7 @@
         # Love,
         # Michael
         pos = Position(pos"WGS84", 1226.709meters, -118.31478degrees, 37.14540degrees)
-        ν = collect(linspace(30e6, 60e6, 5))
+        ν = collect(range(30e6, stop=60e6, length=5))
         stokes = [rand(StokesVector) for idx = 1:length(ν)]
         pls_fix_this_ladwp = RFISource("Power Lines", pos, RFISpectrum(ν, stokes))
         filename = tempname()*".json"
@@ -62,7 +62,7 @@
         @test pls_fix_this_ladwp.spectrum.channels == ladwp_pls.spectrum.channels
         @test pls_fix_this_ladwp.spectrum.stokes == ladwp_pls.spectrum.stokes
 
-        ν = collect(linspace(30e6, 60e6, 5))
+        ν = collect(range(30e6, stop=60e6, length=5))
         stokes = [rand(StokesVector) for idx = 1:length(ν)+1]
         @test_throws ErrorException RFISource("too many stokes vectors", pos, RFISpectrum(ν, stokes))
     end

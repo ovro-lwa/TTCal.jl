@@ -54,12 +54,12 @@ function merge!(lhs::Dataset{T}, rhs::Dataset{T}; axis=:frequency) where {T}
     Nfreq,  Ntime  = size(lhs.data)
     Nfreq′, Ntime′ = size(rhs.data)
     if axis == :frequency
-        data = Array{T}(Nfreq+Nfreq′, Ntime)
+        data = Array{T}(undef, Nfreq+Nfreq′, Ntime)
         data[    1:Nfreq, :] = lhs.data
         data[Nfreq+1:end, :] = rhs.data
         lhs.data = data
     elseif axis == :time
-        data = Array{T}(Nfreq, Ntime+Ntime′)
+        data = Array{T}(undef, Nfreq, Ntime+Ntime′)
         data[:,     1:Ntime] = lhs.data
         data[:, Ntime+1:end] = rhs.data
         lhs.data = data
@@ -166,7 +166,7 @@ function read_antenna1_antenna2(ms::Table)
 end
 
 function write(ms::Table, dataset::Dataset; column="DATA")
-    data  = zeros(Complex64, 4, Nfreq(dataset), Nbase(dataset))
+    data  = zeros(ComplexF32, 4, Nfreq(dataset), Nbase(dataset))
     flags = zeros(     Bool, 4, Nfreq(dataset), Nbase(dataset))
     antenna1, antenna2 = read_antenna1_antenna2(ms)
     pol = polarization(dataset)

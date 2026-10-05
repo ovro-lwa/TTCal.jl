@@ -45,8 +45,8 @@ using ProgressMeter
 using FileIO, JLD2, JSON
 using NLopt # used in fitvis
 using Unitful, UnitfulAstro
-using CasaCore.Measures
-using CasaCore.Tables
+using CasaCoreCompat.Measures
+using CasaCoreCompat.Tables
 using StaticArrays
 using LinearAlgebra
 using Statistics

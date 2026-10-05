@@ -71,9 +71,9 @@ end
 
 function ttcal_to_array(ttcal_dataset)
     npol = polarization(ttcal_dataset) == Dual ? 2 : 4
-    data = zeros(Complex128, npol, Nfreq(ttcal_dataset), Nbase(ttcal_dataset), Ntime(ttcal_dataset))
+    data = zeros(ComplexF64, npol, Nfreq(ttcal_dataset), Nbase(ttcal_dataset), Ntime(ttcal_dataset))
     for ti in 1:Ntime(ttcal_dataset)
-        _data = zeros(Complex128, npol, Nfreq(ttcal_dataset), Nbase(ttcal_dataset))
+        _data = zeros(ComplexF64, npol, Nfreq(ttcal_dataset), Nbase(ttcal_dataset))
         for frequency in 1:Nfreq(ttcal_dataset)
             visibilities = ttcal_dataset[frequency, ti]
             α = 1

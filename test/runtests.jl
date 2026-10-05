@@ -1,7 +1,7 @@
 using TTCal
 using Test
-using CasaCore.Measures
-using CasaCore.Tables
+using CasaCoreCompat.Measures
+using CasaCoreCompat.Tables
 using Unitful, UnitfulAstro
 using LinearAlgebra
 using Statistics
@@ -38,5 +38,8 @@ Random.seed!(123)
     include("fitvis.jl")
     include("calibration.jl")
     #include("peel.jl")
+    @testset "characterization" begin
+        include("characterization.jl")
+    end
 end
 

@@ -150,7 +150,7 @@ function run_applycal(args)
     T = size(data)[1] == 2 ? Dual : Full 
     dataset = array_to_ttcal(data, meta, 1, T)
     applycal!(dataset, cal) 
-    data = convert.(Complex64, ttcal_to_array(dataset))
+    data = convert.(ComplexF32, ttcal_to_array(dataset))
     
     if write_to_corrected
         ms["CORRECTED_DATA"] = data
@@ -220,7 +220,7 @@ for routine in (:peel, :shave, :zest, :prune)
                              tolerance=tolerance, minuvw=minuvw,
                              collapse_frequency=collapse_frequency)
         
-        data = convert.(Complex64, ttcal_to_array(dataset))
+        data = convert.(ComplexF32, ttcal_to_array(dataset))
 
         if routine_name in ("peel", "shave")
             data_out = Tables.column_exists(ms, "CORRECTED_DATA") ? ms["CORRECTED_DATA"] : ms["DATA"]

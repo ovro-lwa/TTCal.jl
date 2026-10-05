@@ -13,10 +13,6 @@ makedocs(
 
 deploydocs(
     repo = "github.com/mweastwood/TTCal.jl.git",
-    julia = "0.6",
-    osname = "linux",
-    target = "build",
-    deps = nothing,
-    make = nothing
+    target = "build"
 )
 
